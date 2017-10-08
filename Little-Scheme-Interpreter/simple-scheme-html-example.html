@@ -4,37 +4,42 @@
 <head>
     <meta charset="utf-8" />
     <title>Scheme example</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pegjs/0.9.0/peg.js">
-    </script>
-    <script type="text/scheme"> 
-
-      (
-        (define square
-          (lambda (n) (if (> n 5) (console-log pi) (console-log -1)))
-        )
-
-        (alert "Hey there")
-        (confirm "Hey there")
-
-        (define pi 3.1444)
-
-        (square 6)
-
-       )
-
-
-    
-        </script>
-    <script src="./simple-scheme-interpreter.js">
-    </script>
      
 </head>
 
 <body>
-    <div id="bsconsole">
+    <div id="schemeDiv">
         Demo
     </div>
 
+
 </body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pegjs/0.9.0/peg.js">
+
+</script>
+<script
+        src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous"></script>
+
+<script>
+
+</script>
+<script type="text/scheme">
+
+      (
+        (define handler
+          (add-handler! "#schemeDiv" "click" (lambda(ev) (console-log(ev))))
+         )
+
+         (remove-handler! "#schemeDiv" "click" handler)
+       )
+
+
+
+        </script>
+<script src="./simple-scheme-interpreter.js">
+</script>
 
 </html>

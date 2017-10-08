@@ -12,7 +12,7 @@
   multiexpression = atom / expressions ;');
 
 var s = "";
-
+    var document = window.document;
     var Context = function(scope, parent) {
         this.scope = scope;
         this.parent = parent;
@@ -52,7 +52,6 @@ var s = "";
         "console-clear" : function(x) {
             console.clear();
         },
-
         alert : function (x) {
             window.alert(x);
         },
@@ -61,8 +60,33 @@ var s = "";
           window.confirm(x);
         },
 
+        "remove-handler!" : function (x) {
+            if(arguments.length === 3) {
+                var selector = arguments[0];
+                var evtType = arguments[1];
+                var handler = arguments[2];
+                if(handler)
+                    $(selector).off(evtType, handler);
+                else
+                    alert("Add a " + evtType + " on " + selector + " before removing");
+            } else {
+                throw "Insufficient parameters passed to Remove handler function";
+            }
+        },
+        "add-handler!" : function() {
+            if(arguments.length === 3) {
+                var selector = arguments[0];
+                var evtType = arguments[1];
+                var handler = arguments[2];
+                $(selector).on(evtType, handler);
+                return handler;
+                //  elements[0].addEventListener(evtType, handler);
+            } else {
+                throw "Insufficient parameters passed to add handler function";
+            }
+        },
 
-        "+" : function(x) {
+        "+" : function() {
             var total = 0;
             for (var i=0; i < arguments.length; i++) {
                 total = total + arguments[i];
@@ -71,15 +95,15 @@ var s = "";
             return total;
         },
 
-        "&gt;" : function(x) {
+        "&gt;" : function() {
             return arguments[0] > arguments[1];
         },
 
-        "&lt;" : function(x) {
+        "&lt;" : function() {
             return arguments[0] > arguments[1];
         },
 
-        "*" : function(x) {
+        "*" : function() {
             var total = 0;
             for (var i=0; i < arguments.length; i++) {
                 total = total * arguments[i];
@@ -101,6 +125,7 @@ var s = "";
         define : function(input, context) {
             context.scope[input[1].value] = interpret(input[2], context);
         },
+
         lambda: function(input, context) {
             return function() {
                 var lambdaArguments = arguments;
@@ -109,7 +134,7 @@ var s = "";
                     return acc;
                 }, {});
 
-                return interpret(input[2], new Context(lambdaScope, context));
+                return interpret(input.slice(2), new Context(lambdaScope, context));
             };
         },
         if: function(input, context) {
@@ -248,30 +273,33 @@ var s = "";
         return temp;
     };
 
-    var generatedSource = new XMLSerializer().serializeToString(document);
+    $( document ).ready(function() {
+        console.log( "ready!" );
+        var generatedSource = new XMLSerializer().serializeToString(document);
 // Look for script tag with scheme in the page source
-var pattern_for_scheme= /<script type="text\/scheme"[\s\S]*?>[\s\S]*?<\/script>/gi;
+        var pattern_for_scheme= /<script type="text\/scheme"[\s\S]*?>[\s\S]*?<\/script>/gi;
 // variable matches contains list of the source codes
-var matches = generatedSource.match(pattern_for_scheme);
-var result = "";
-var res;
-for (var i in matches){
-  result += "Match:" + matches[i] + "\n";
-  s= matches[i];
-  s=s.replace(/<script type="text\/scheme"\s*?>/ig,"");
-  s=s.replace(/<\/script>/ig,"");
-  s=s.trim();
+        var matches = generatedSource.match(pattern_for_scheme);
+        var result = "";
+        var res;
+        for (var i in matches) {
+            result += "Match:" + matches[i] + "\n";
+            s = matches[i];
+            s = s.replace(/<script type="text\/scheme"\s*?>/ig, "");
+            s = s.replace(/<\/script>/ig, "");
+            s = s.trim();
 
- // var PegAST= parser.parse(s);
- //   console.log(categorizeAST(PegAST));
- //   var pegRet = littleScheme.interpret(categorizeAST(PegAST));
-   // console.log(pegRet);
+            // var PegAST= parser.parse(s);
+            //   console.log(categorizeAST(PegAST));
+            //   var pegRet = littleScheme.interpret(categorizeAST(PegAST));
+            // console.log(pegRet);
 
-  var AST= littleScheme.parse(s);
- // console.log(AST);
-  
-var ret = littleScheme.interpret(AST);
-     //  console.log(ret);
+            var AST = littleScheme.parse(s);
+            console.log(AST);
 
-}
+            var ret = littleScheme.interpret(AST);
+        }
+    });
+
+
 })(typeof exports === 'undefined' ? this : exports);
