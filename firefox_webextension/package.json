@@ -1,0 +1,10 @@
+{
+  "name": "multilanguagesupport",
+  "version": "1.0.0",
+  "description": "Browser plugin to run multiple languages simultenously",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Swapnil M Patil (swapnilpatil427@gmail.com)",
+  "license": "ISC"
+}
