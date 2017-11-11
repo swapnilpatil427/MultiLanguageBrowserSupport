@@ -18,7 +18,7 @@ var executingpegjs = browser.tabs.executeScript(null, {
  
  executingpegjs.then(() => {
             console.log("loaded");
-          }).error(onErrorPegjs);
+}).error(onErrorPegjs);
 
 
 function onErrorSchemeInterpreter(error) {

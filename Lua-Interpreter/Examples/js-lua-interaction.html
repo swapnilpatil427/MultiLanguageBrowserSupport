@@ -1,0 +1,35 @@
+
+
+<html>
+<head>
+    <script src="../lua.vm.js"></script>
+
+    <title>Lua VM </title>
+
+    <script>
+      function sayHello(message) {
+          console.log(message);
+      }
+
+      L.execute( // Lua Function Declaration
+          "function printName (recipient) " +
+           "print('Hello, '..recipient)" +
+          "end " +
+
+          // Call to Lua Function
+          "printName('CS298 Project') " +
+
+          // Calling Java Script function from Lua
+           " js.global:sayHello('Hello to JS function')" +
+
+
+          // Alert from Lua "
+          "js.global:alert('Hello from Lua') "
+      );
+
+    </script>
+</head>
+<body>
+Executing lua function from Java Script environment.
+</body>
+</html>

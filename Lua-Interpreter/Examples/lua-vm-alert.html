@@ -1,0 +1,18 @@
+<html>
+<head>
+    <script src="../lua.vm.js"></script>
+
+    <title>Lua VM </title>
+
+    <script type="text/lua">
+    js.global:alert('hello from Lua script tag in HTML!') -- this is Lua!
+</script>
+
+</head>
+<body>
+Lua in browser.
+</body>
+<script type="text/javascript">
+    L.execute("js.global:alert('Hello World from Lua!')");
+</script>
+</html>

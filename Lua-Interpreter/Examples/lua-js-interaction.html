@@ -1,0 +1,38 @@
+
+<html>
+<head>
+    <script src="../lua.vm.js"></script>
+
+    <title>Lua VM - Lua to JS interaction</title>
+    <script type="text/lua">
+    local window = js.global -- global object in JS is the window
+
+
+       -- Lua executing Java Script code
+       window:eval('function sayHello (message)' ..
+                 '{ alert(message); }' ..
+                 'sayHello("Hello from Java Script calling from Lua");'
+                 )
+
+
+        window:alert("hello from lua!")
+
+
+        -- Accessing DOM APIS from Lua
+        local document = js.global.document
+        print("This window has title '" .. document.title .. "'")
+
+        -- function
+        function printWindowSize ()
+            local screen = js.global.screen
+            print("you haz " .. (screen.width*screen.height) .. " pixels")
+        end
+
+        printWindowSize()
+   </script>
+
+</head>
+<body>
+Executing lua function in browser.
+</body>
+</html>

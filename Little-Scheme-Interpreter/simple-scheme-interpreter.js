@@ -11,6 +11,7 @@
   expressions = spaces newline  lists:list+ newline spaces { return lists };\
   multiexpression = atom / expressions ;');
 
+      var geval = eval;
 var s = "";
     var document = window.document;
     var Context = function(scope, parent) {
@@ -83,6 +84,57 @@ var s = "";
                 //  elements[0].addEventListener(evtType, handler);
             } else {
                 throw "Insufficient parameters passed to add handler function";
+            }
+        },
+        "getelem" : function () {
+            if(arguments.length === 1) {
+                var selector = arguments[0];
+                return $(selector);
+            } else {
+                throw "Insufficient parameters passed to getelem function";
+            }
+        },
+        "js-eval" : function () {
+            if(arguments.length === 1) {
+                var str = arguments[0];
+                return geval(str); // returns 42
+            } else {
+                throw "Insufficient parameters passed to getelem function";
+            }
+        },
+        "element-visible?" : function () {
+            if(arguments.length === 1) {
+                var selector = arguments[0];
+                return $(selector).toggle();
+            } else {
+                throw "Insufficient parameters passed to element update function";
+            }
+        },
+        "element-toggle!" : function () {
+            if(arguments.length === 1) {
+                var selector = arguments[0];
+                return $(selector).is(":visible");
+            } else {
+                throw "Insufficient parameters passed to element update function";
+            }
+        },
+        "element-replace!" : function () {
+            if(arguments.length === 2) {
+                var selector = arguments[0];
+                var content = arguments[1];
+                return $(selector).replaceWith(content);
+            } else {
+                throw "Insufficient parameters passed to element update function";
+            }
+        },
+
+        "element-update!" : function () {
+            if(arguments.length === 2) {
+                var selector = arguments[0];
+                var content = arguments[1];
+                return $(selector).html(content);
+            } else {
+                throw "Insufficient parameters passed to element update function";
             }
         },
 
@@ -222,13 +274,18 @@ var s = "";
         return parenthesize(tokenize(input));
     };
 
+    var evaluate = function(input) {
+        var AST = parse(input);
+        return interpret(AST);
+    }
+
   littleScheme = {
       parse : parse,
-    interpret: interpret
+    interpret: interpret,
+      evaluate : evaluate
   };
 
     $( document ).ready(function() {
-        console.log( "ready!" );
         var generatedSource = new XMLSerializer().serializeToString(document);
 // Look for script tag with scheme in the page source
         var pattern_for_scheme= /<script type="text\/scheme"[\s\S]*?>[\s\S]*?<\/script>/gi;
@@ -243,13 +300,7 @@ var s = "";
             s = s.replace(/<\/script>/ig, "");
             s = s.trim();
 
-            // var PegAST= parser.parse(s);
-            //   console.log(categorizeAST(PegAST));
-            //   var pegRet = littleScheme.interpret(categorizeAST(PegAST));
-            // console.log(pegRet);
-
             var AST = littleScheme.parse(s);
-            console.log(AST);
 
             var ret = littleScheme.interpret(AST);
         }

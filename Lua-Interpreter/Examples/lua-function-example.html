@@ -1,0 +1,27 @@
+<html>
+<head>
+    <script src="../lua.vm.js"></script>
+
+    <title>Lua VM </title>
+
+    <script type="text/lua">
+    -- function
+    function printName (recipient)
+	    print('Hello, '..recipient)
+    end
+
+    -- Anonymus function
+    local sayHello = function (recipient)
+        print('Hello, '..recipient)
+    end
+
+    sayHello('Swapnil')
+    printName('CS298 Project')
+
+</script>
+
+</head>
+<body>
+Executing lua function in browser.
+</body>
+</html>

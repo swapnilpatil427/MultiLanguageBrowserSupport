@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Calling Java Script from Scheme example</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pegjs/0.9.0/peg.js">
+
+    </script>
+    <script
+            src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
+
+    <script>
+
+    </script>
+</head>
+
+<body>
+ <input type="button" id="call" value="Click to call Java Script from Scheme">
+</body>
+
+
+<script type="text/scheme">
+
+ (
+
+      (add-handler! "#call" "click" (lambda(ev)
+                (js-eval "var sayHello = function (tmp) { return 'Hello ' + tmp };")
+                (js-eval "alert('Java Script Alert from Scheme - ' + sayHello('Swapnil'))")
+            ))
+       )
+     )
+
+
+        </script>
+<script src="../simple-scheme-interpreter.js">
+</script>
+
+</html>
